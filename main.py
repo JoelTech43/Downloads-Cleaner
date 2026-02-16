@@ -49,19 +49,25 @@ def move_files(files_to_move):
                 dest = os.path.join(DIRECTORY, "Microsoft_Files")
             case ".exe" | ".msi":
                 dest = os.path.join(DIRECTORY, "Executable_Files")
-            case "pdf":
+            case ".pdf":
                 dest = os.path.join(DIRECTORY, "PDF_Files")
             case _:
                 dest = os.path.join(DIRECTORY, "Misc_Files")
         old_path = os.path.join(DIRECTORY, file)
         new_path = os.path.join(dest, file)
-        os.rename(old_path, new_path)
+        try:
+            os.rename(old_path, new_path)
+        except FileExistsError:
+            print(f"{new_path} already exists. Cannot move.")
 
 def move_subdirectories(dirs_to_move):
     for dir in dirs_to_move:
         old_path = os.path.join(DIRECTORY, dir)
         new_path = os.path.join(DIRECTORY, "Subdirectories", dir)
-        os.rename(old_path, new_path)
+        try:
+            os.rename(old_path, new_path)
+        except FileExistsError:
+            print(f"{new_path} already exists. Cannot move.")
 
 if __name__ == "__main__":
     setup()
